@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
@@ -61,7 +64,7 @@ namespace WooCommerceCore.NET.Tests
         public async Task ListCategory()
         {
             var categories = await _categoryRepository.ListEntitiesAsync();
-            Assert.Contains(_createdCategory, categories.ToArray());
+            CollectionAssert.Contains(categories, _createdCategory);
         }
 
         [Test]
