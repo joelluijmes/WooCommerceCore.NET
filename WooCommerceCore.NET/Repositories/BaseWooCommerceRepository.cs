@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using WooCommerceCore.NET.Models;
 
@@ -12,8 +14,24 @@ namespace WooCommerceCore.NET.Repositories
 
         public async Task<IList<T>> ListEntitiesAsync()
         {
-            var response = await JsonClient.GetJsonAsync(_api);
-            return response.ToObject<IList<T>>();
+            const int batchsize = 100;
+
+            var totalEntities = new List<T>();
+
+            for (var i = 1;; ++i)
+            {
+                var response = await JsonClient.GetJsonAsync($"{_api}?per_page={batchsize}&page={i}");
+                if (response == null)
+                    return null;
+
+                var batch = response.ToObject<IList<T>>();
+                totalEntities.AddRange(batch);
+
+                if (!batch.Any() || batch.Count < batchsize)
+                    break;
+            }
+
+            return totalEntities;
         }
 
         public async Task<T> CreateAsync(T entity)
