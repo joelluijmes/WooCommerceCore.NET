@@ -36,7 +36,7 @@ namespace WooCommerceCore.NET.Repositories
 
         public async Task<T> DeleteAsync(T entity)
         {
-            var response = await JsonClient.DeleteJsonAsync($"{_api}/{entity.Id}");
+            var response = await JsonClient.DeleteJsonAsync($"{_api}/{entity.Id}?force=1");
             return response.ToObject<T>();
         }
 
