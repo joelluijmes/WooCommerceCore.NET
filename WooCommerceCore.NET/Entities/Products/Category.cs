@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace WooCommerceCore.NET.Models.Products
+namespace WooCommerceCore.NET.Entities.Products
 {
     public sealed class Category : IEntity
     {

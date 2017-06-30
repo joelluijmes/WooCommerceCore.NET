@@ -1,4 +1,4 @@
-﻿using WooCommerceCore.NET.Models.Products;
+﻿using WooCommerceCore.NET.Entities.Products;
 
 namespace WooCommerceCore.NET.Repositories.Products
 {

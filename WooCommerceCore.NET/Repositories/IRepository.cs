@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using WooCommerceCore.NET.Models;
+using WooCommerceCore.NET.Entities;
 
 namespace WooCommerceCore.NET.Repositories
 {

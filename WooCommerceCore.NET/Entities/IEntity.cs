@@ -1,4 +1,4 @@
-﻿namespace WooCommerceCore.NET.Models
+﻿namespace WooCommerceCore.NET.Entities
 {
     public interface IEntity
     {
