@@ -49,8 +49,8 @@ namespace WooCommerceCore.NET
         public async Task<JToken> GetJsonAsync(string url)
         {
             var response = await HttpClient.GetAsync(url);
-
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+                return null;
 
             var str = await response.Content.ReadAsStringAsync();
             return JToken.Parse(str);
@@ -64,7 +64,8 @@ namespace WooCommerceCore.NET
         public async Task<JToken> DeleteJsonAsync(string url)
         {
             var response = await HttpClient.DeleteAsync(url);
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+                return null;
 
             var str = await response.Content.ReadAsStringAsync();
             return JToken.Parse(str);
@@ -76,7 +77,8 @@ namespace WooCommerceCore.NET
             using (var content = new StringContent(json, Encoding.UTF8, "application/json"))
             {
                 var response = await HttpClient.PutAsync(url, content);
-                response.EnsureSuccessStatusCode();
+                if (!response.IsSuccessStatusCode)
+                    return null;
 
                 var str = await response.Content.ReadAsStringAsync();
                 return JToken.Parse(str);
@@ -89,7 +91,8 @@ namespace WooCommerceCore.NET
             using (var content = new StringContent(json, Encoding.UTF8, "application/json"))
             {
                 var response = await HttpClient.PostAsync(url, content);
-                response.EnsureSuccessStatusCode();
+                if (!response.IsSuccessStatusCode)
+                    return null;
 
                 var str = await response.Content.ReadAsStringAsync();
                 return JToken.Parse(str);
