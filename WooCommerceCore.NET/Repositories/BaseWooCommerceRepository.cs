@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WooCommerceCore.NET.Models;
@@ -10,9 +9,16 @@ namespace WooCommerceCore.NET.Repositories
         where T : IEntity
     {
         private readonly string _api;
+
+        protected BaseWooCommerceRepository(JsonRestClient jsonClient, string api)
+        {
+            _api = api;
+            JsonClient = jsonClient;
+        }
+
         protected JsonRestClient JsonClient { get; }
 
-        public async Task<IList<T>> ListEntitiesAsync()
+        public async Task<IList<T>> ListAsync()
         {
             const int batchsize = 100;
 
@@ -42,11 +48,11 @@ namespace WooCommerceCore.NET.Repositories
                 : response.ToObject<T>();
         }
 
-        public async Task<T> Retrieve(int id)
+        public async Task<T> RetrieveAsync(int id)
         {
             var response = await JsonClient.GetJsonAsync($"{_api}/{id}");
-            return response == null 
-                ? default(T) 
+            return response == null
+                ? default(T)
                 : response.ToObject<T>();
         }
 
@@ -64,12 +70,6 @@ namespace WooCommerceCore.NET.Repositories
             return response == null
                 ? default(T)
                 : response.ToObject<T>();
-        }
-
-        protected BaseWooCommerceRepository(JsonRestClient jsonClient, string api)
-        {
-            _api = api;
-            JsonClient = jsonClient;
         }
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -45,7 +44,17 @@ namespace WooCommerceCore.NET
             HttpClient?.Dispose();
             _disposed = true;
         }
-        
+
+        public async Task<JToken> DeleteJsonAsync(string url)
+        {
+            var response = await HttpClient.DeleteAsync(url);
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            var str = await response.Content.ReadAsStringAsync();
+            return JToken.Parse(str);
+        }
+
         public async Task<JToken> GetJsonAsync(string url)
         {
             var response = await HttpClient.GetAsync(url);
@@ -61,22 +70,12 @@ namespace WooCommerceCore.NET
             //    return await JObject.LoadAsync(reader);
         }
 
-        public async Task<JToken> DeleteJsonAsync(string url)
-        {
-            var response = await HttpClient.DeleteAsync(url);
-            if (!response.IsSuccessStatusCode)
-                return null;
-
-            var str = await response.Content.ReadAsStringAsync();
-            return JToken.Parse(str);
-        }
-
-        public async Task<JToken> PutJsonAsync<T>(string url, T postObject)
+        public async Task<JToken> PostJsonAsync<T>(string url, T postObject)
         {
             var json = JsonConvert.SerializeObject(postObject);
             using (var content = new StringContent(json, Encoding.UTF8, "application/json"))
             {
-                var response = await HttpClient.PutAsync(url, content);
+                var response = await HttpClient.PostAsync(url, content);
                 if (!response.IsSuccessStatusCode)
                     return null;
 
@@ -85,12 +84,12 @@ namespace WooCommerceCore.NET
             }
         }
 
-        public async Task<JToken> PostJsonAsync<T>(string url, T postObject)
+        public async Task<JToken> PutJsonAsync<T>(string url, T postObject)
         {
             var json = JsonConvert.SerializeObject(postObject);
             using (var content = new StringContent(json, Encoding.UTF8, "application/json"))
             {
-                var response = await HttpClient.PostAsync(url, content);
+                var response = await HttpClient.PutAsync(url, content);
                 if (!response.IsSuccessStatusCode)
                     return null;
 

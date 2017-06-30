@@ -4,9 +4,6 @@ namespace WooCommerceCore.NET.Models.Products
 {
     public sealed class Category : IEntity
     {
-        [JsonProperty("id")]
-        public int Id { get; set; }
-
         [JsonProperty("name")]
         public string Name { get; set; }
 
@@ -31,9 +28,8 @@ namespace WooCommerceCore.NET.Models.Products
         [JsonProperty("count")]
         public int Count { get; set; }
 
-        public override string ToString() => Name;
-
-        private bool Equals(Category other) => Count == other.Count && string.Equals(Description, other.Description) && string.Equals(Display, other.Display) && Id == other.Id && MenuOrder == other.MenuOrder && string.Equals(Name, other.Name) && Parent == other.Parent && string.Equals(Slug, other.Slug);
+        [JsonProperty("id")]
+        public int Id { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -64,5 +60,9 @@ namespace WooCommerceCore.NET.Models.Products
         public static bool operator ==(Category left, Category right) => Equals(left, right);
 
         public static bool operator !=(Category left, Category right) => !Equals(left, right);
+
+        public override string ToString() => Name;
+
+        private bool Equals(Category other) => Count == other.Count && string.Equals(Description, other.Description) && string.Equals(Display, other.Display) && Id == other.Id && MenuOrder == other.MenuOrder && string.Equals(Name, other.Name) && Parent == other.Parent && string.Equals(Slug, other.Slug);
     }
 }
