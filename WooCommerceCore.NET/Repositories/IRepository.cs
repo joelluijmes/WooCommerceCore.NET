@@ -4,7 +4,7 @@ using WooCommerceCore.NET.Entities;
 
 namespace WooCommerceCore.NET.Repositories
 {
-    internal interface IRepository<T>
+    public interface IRepository<T>
         where T : IEntity
     {
         Task<T> CreateAsync(T entity);

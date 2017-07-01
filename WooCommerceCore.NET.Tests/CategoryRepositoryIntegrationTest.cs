@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using WooCommerceCore.NET.Entities.Products;
 using WooCommerceCore.NET.Exceptions;
+using WooCommerceCore.NET.Repositories;
 using WooCommerceCore.NET.Repositories.Products;
 
 namespace WooCommerceCore.NET.Tests
