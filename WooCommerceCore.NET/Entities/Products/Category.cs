@@ -63,6 +63,13 @@ namespace WooCommerceCore.NET.Entities.Products
 
         public override string ToString() => Name;
 
-        private bool Equals(Category other) => Count == other.Count && string.Equals(Description, other.Description) && string.Equals(Display, other.Display) && Id == other.Id && MenuOrder == other.MenuOrder && string.Equals(Name, other.Name) && Parent == other.Parent && string.Equals(Slug, other.Slug);
+        private bool Equals(Category other) => Count == other.Count &&
+                                               string.Equals(Description, other.Description) &&
+                                               string.Equals(Display, other.Display) &&
+                                               Id == other.Id &&
+                                               MenuOrder == other.MenuOrder &&
+                                               string.Equals(Name, other.Name) &&
+                                               Parent == other.Parent &&
+                                               string.Equals(Slug, other.Slug);
     }
 }
