@@ -7,23 +7,34 @@ namespace WooCommerceCore.NET.Tests
 {
     public class BaseTests
     {
-        protected IJsonRestClient RestClient { get; private set; }
-        protected IConfiguration Configuration { get; private set; }
+        private static bool _initialized;
+        private static readonly IConfigurationRoot _configuration;
+        private static readonly WooCommerceRestClient _restClient;
+
+        protected IJsonRestClient RestClient => _restClient;
+        protected IConfiguration Configuration => _configuration;
+
+        static BaseTests()
+        {
+            _configuration = new ConfigurationBuilder()
+                .AddJsonFile("settings.json")
+                .Build();
+
+            var jsonClient = new JsonRestClient(_configuration["api_url"], _configuration["api_key"], _configuration["api_secret"]);
+            _restClient = new WooCommerceRestClient(jsonClient);
+        }
 
         [OneTimeSetUp]
         public async Task TestServerReachable()
         {
-            Configuration = new ConfigurationBuilder()
-                .AddJsonFile("settings.json")
-                .Build();
-
-            var jsonClient = new JsonRestClient(Configuration["api_url"], Configuration["api_key"], Configuration["api_secret"]);
-            RestClient = new WooCommerceRestClient(jsonClient);
+            if (_initialized)
+                return;
 
             var response = await RestClient.GetJsonAsync("system_status");
             var version = response.SelectToken("$.environment.version");
 
             Assert.IsNotNull(version, "Couldn't get version of test target");
+            _initialized = true;
         }
     }
 }
