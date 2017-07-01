@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using WooCommerceCore.NET.Entities;
+using WooCommerceCore.NET.REST;
 
 namespace WooCommerceCore.NET.Repositories
 {
@@ -10,13 +11,13 @@ namespace WooCommerceCore.NET.Repositories
     {
         private readonly string _api;
 
-        protected BaseWooCommerceRepository(JsonRestClient jsonClient, string api)
+        protected BaseWooCommerceRepository(IJsonRestClient jsonClient, string api)
         {
             _api = api;
             JsonClient = jsonClient;
         }
 
-        protected JsonRestClient JsonClient { get; }
+        protected IJsonRestClient JsonClient { get; }
 
         public async Task<IList<T>> ListAsync()
         {

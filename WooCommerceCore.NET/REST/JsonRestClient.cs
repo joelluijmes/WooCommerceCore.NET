@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace WooCommerceCore.NET
+namespace WooCommerceCore.NET.REST
 {
-    public sealed class JsonRestClient : IDisposable
+    public sealed class JsonRestClient : IDisposable, IJsonRestClient
     {
         private bool _disposed;
 
@@ -48,26 +48,17 @@ namespace WooCommerceCore.NET
         public async Task<JToken> DeleteJsonAsync(string url)
         {
             var response = await HttpClient.DeleteAsync(url);
-            if (!response.IsSuccessStatusCode)
-                return null;
-
             var str = await response.Content.ReadAsStringAsync();
+
             return JToken.Parse(str);
         }
 
         public async Task<JToken> GetJsonAsync(string url)
         {
             var response = await HttpClient.GetAsync(url);
-            if (!response.IsSuccessStatusCode)
-                return null;
-
             var str = await response.Content.ReadAsStringAsync();
-            return JToken.Parse(str);
 
-            //using (var contentStream = await response.Content.ReadAsStreamAsync())
-            //using (var textReader = new StreamReader(contentStream))
-            //using (var reader = new JsonTextReader(textReader))
-            //    return await JObject.LoadAsync(reader);
+            return JToken.Parse(str);
         }
 
         public async Task<JToken> PostJsonAsync<T>(string url, T postObject)
@@ -76,10 +67,8 @@ namespace WooCommerceCore.NET
             using (var content = new StringContent(json, Encoding.UTF8, "application/json"))
             {
                 var response = await HttpClient.PostAsync(url, content);
-                if (!response.IsSuccessStatusCode)
-                    return null;
-
                 var str = await response.Content.ReadAsStringAsync();
+
                 return JToken.Parse(str);
             }
         }
@@ -90,10 +79,8 @@ namespace WooCommerceCore.NET
             using (var content = new StringContent(json, Encoding.UTF8, "application/json"))
             {
                 var response = await HttpClient.PutAsync(url, content);
-                if (!response.IsSuccessStatusCode)
-                    return null;
-
                 var str = await response.Content.ReadAsStringAsync();
+
                 return JToken.Parse(str);
             }
         }

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using NUnit.Framework;
 using WooCommerceCore.NET.Entities.Products;
+using WooCommerceCore.NET.Exceptions;
 using WooCommerceCore.NET.Repositories.Products;
 
 namespace WooCommerceCore.NET.Tests
@@ -38,10 +39,12 @@ namespace WooCommerceCore.NET.Tests
         [Test]
         [Order(4)]
         [Description("Fails on retrieving the deleted category by id")]
-        public async Task FailRetrieveDeletedCategory()
+        public void FailRetrieveDeletedCategory()
         {
-            var retrievedCategory = await _categoryRepository.RetrieveAsync(_createdCategory.Id);
-            Assert.IsNull(retrievedCategory);
+            Assert.ThrowsAsync<RestException>(async () =>
+            {
+                await _categoryRepository.RetrieveAsync(_createdCategory.Id);
+            });
         }
 
         [Test]
